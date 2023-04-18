@@ -1,6 +1,7 @@
 from openpyxl import Workbook
-from openpyxl.styles import Font, Alignment
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 import imdb
+from collections import Counter
 
 im = imdb.IMDb()
 wb = Workbook()
@@ -8,11 +9,15 @@ ws = wb.active
 
 center_align = Alignment(horizontal='center', vertical='center')
 ws['B1'] = "Title"
-ws['B1'].font = Font(name='Verdana', size=18, bold=True, color='00FF6600')
+ws['B1'].font = Font(name='Verdana', size=18, bold=True, color='00FFFFFF')
+ws['B1'].fill = PatternFill("solid", start_color='00339966')
+# ws['B1'].border = Side(border_style="double", color="FFFFFFFF")
 ws['C1'] = "Director"
-ws['C1'].font = Font(name='Verdana', size=18, bold=True, color='00FF6600')
+ws['C1'].font = Font(name='Verdana', size=18, bold=True, color='00FFCC00')
+ws['C1'].fill = PatternFill("solid", start_color='00FF8080')
 ws['D1'] = "Year"
 ws['D1'].font = Font(name='Verdana', size=18, bold=True, color='00FF6600')
+ws['D1'].fill = PatternFill("solid", start_color='00003366')
 
 for c in ws['A2:A100']:
     c[0].alignment = center_align
@@ -55,23 +60,33 @@ films = ["0078748", "0093773", "1375666",
          "0084434", "0117998", "0079817",
          "0469494", "0146838", "0044079",
          "0102138", "0104684", "0100802",
-         "0120586",
+         "0120586", "0085636"
          ]
 
-# movieTest = im.search_movie("American History X")
+# movieTest = im.search_movie("Halloween 3: Season of the Witch")
 # print(movieTest)
-# movie = im.get_movie('0120586').data
+# movie = im.get_movie('0085636').data
 # title = movie['original title']
 # year = movie['year']
 # for i in movie['director']:
+#     cn = Counter(i)
+#     # total = cn[i]
 #     print(f'{title} - {i} - {year}')
+# print(f'{total}')
 # column = 2
 # # columnThree = 3
 # # columnFour = 4
-# for i, v in enumerate(films):
-#     # print(i, v)
-#     movie = im.get_movie(v).data
-#     title = movie['original title']
+for i, v in enumerate(films):
+    # print(i, v)
+    movie = im.get_movie(v).data
+    year = movie['year']
+    # print(type(year))
+    li = []
+    li.append(year)
+    # cn = Counter()
+    # total = cn[year]
+    print(f'list {li}')
+    # for i in movie['']
 #     ws.cell(row=i+2, column=column, value=title)
 # print(title)
 # movie = im.get_movie('0120586').data
