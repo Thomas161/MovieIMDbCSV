@@ -33,9 +33,10 @@ for c in ws['B2:D100']:
 for i in range(1, 100):
     ws.cell(row=i+1, column=1, value="*")
 
-films = ["0078748", "0093773", "1375666",
-         "0090605", "0167261", "0369339",
-         "0372784", "0468569", "0080455"]
+films = ["0078748", "0093773", "1375666"]
+
+#  "0090605", "0167261", "0369339"
+#          "0372784", "0468569", "0080455"]
 #  "0167260", "0120737", "0208092"]
 #  "0253556", "0238380", "0209144",
 #  "0278504", "0076740", "0090180",
@@ -86,19 +87,69 @@ columnFour = 4
 # sort the array to make it easier
 # use max(list,key=list.count) => will get max year/director
 # movieListYear = []
-
-
+movieListDirectors = []
 for i, v in enumerate(films):
     movie = im.get_movie(v).data
+    for i in movie['director']:
+        director = im.search_person(i["name"])[0]
+        # for d in director:
+        #     print(d)
+    # director = movie['director']
+    # result = im.search_person(director["name"])[0]
+    # print(result)
+    # for i in director:
+    #     print(str(i))
     title = movie['original title']
-    # print(f'{title}')
+    # movieListDirectors.append(i)
+    # movieListDirectors.sort()
+    # print(director)
     year = movie['year']
+    print(f'{title} - {year} - {director}')
+    # ws.cell(row=i+2, column=column, value=title)
+    # ws.cell(row=row+2, column=columnThree, value=int(i))
+    # ws.cell(row=i+2, column=columnFour, value=year)
     # movieListDirectors = []
-    ws.cell(row=i+2, column=column, value=title)
-    ws.cell(row=i+2, column=columnFour, value=year)
-for i in movie['director']:
-    for x in i:
-        print(x)
+    # ws.cell(row=i+2, column=column, value=title)
+    # ws.cell(row=i+2, column=columnThree, value=str(director))
+    # ws.cell(row=i+2, column=columnFour, value=year)
+# for i in movie['director']:
+#     director = im.search_person(i["name"])[0]
+    # im.update(director)
+    # print(director)
+    # print(f'{title} - {director} - {year}')
+    # movieListDirectors = []
+    # movieListDirectors.append(str(director))
+    # movieListDirectors.sort()
+    # print(movieListDirectors)
+    # row = 0
+    # ws.cell(row=row+2, column=columnThree, value=str(director))
+
+    # for k in im.search_person(str(i))[:1]:
+    #     director = im.get_person(k.personID)
+    #     print(director)
+    # s = set()
+    # movieListDirectors.append(str(i))
+    # movieListDirectors.sort()
+    # print(movieListDirectors)
+    # for j in movieListDirectors:
+    #     print(j)
+    # direct = s.add(i)
+    # print(i)
+
+    # ws.cell(row=i+2, column=column, value=title)
+    # ws.cell(row=row+2, column=columnThree, value=str(director))
+    # ws.cell(row=i+2, column=columnFour, value=year)
+    # title = movie['original title']
+    # movieListDirectors.append(i)
+    # movieListDirectors.sort()
+    # print(i, v)
+    # year = movie['year']
+    # movieListDirectors = []
+    # ws.cell(row=i+2, column=column, value=title)
+    # ws.cell(row=i+2, column=columnFour, value=year)
+# for i in movie['director']:
+    # for x in i:
+    #     print(x)
     # ws.cell(row=i+2, column=column, value=title)
     # ws.cell(row=i+2, column=columnThree, value=i)
     # ws.cell(row=i+2, column=columnFour, value=year)
