@@ -1,11 +1,18 @@
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from imdb import Cinemagoer
 from collections import Counter
+import pandas as pd
 
 im = Cinemagoer()
 wb = Workbook()
 ws = wb.active
+
+ws = wb.create_sheet("Sheet_A")
+ws.title = "Films"
+wstwo = wb.create_sheet("Sheet_B", 0)
+wstwo.title = "Tables"
+
 
 center_align = Alignment(horizontal='center', vertical='center')
 ws['B1'] = "Title"
@@ -17,12 +24,12 @@ ws['C1'].fill = PatternFill("solid", start_color='00FF8080')
 ws['D1'] = "Year"
 ws['D1'].font = Font(name='Verdana', size=18, bold=True, color='00FF6600')
 ws['D1'].fill = PatternFill("solid", start_color='00003366')
-ws['A103'] = "Year with most Films"
-ws['A103'].font = Font(name='Verdana', size=18, bold=True, color='00FFFF99')
-ws['A103'].fill = PatternFill("solid", start_color='00003366')
-ws['A104'] = "Most Films by Director"
-ws['A104'].font = Font(name='Verdana', size=18, bold=True, color='00FFFF99')
-ws['A104'].fill = PatternFill("solid", start_color='00003366')
+# ws['A103'] = "Year with most Films"
+# ws['A103'].font = Font(name='Verdana', size=18, bold=True, color='00FFFF99')
+# ws['A103'].fill = PatternFill("solid", start_color='00003366')
+# ws['A104'] = "Most Films by Director"
+# ws['A104'].font = Font(name='Verdana', size=18, bold=True, color='00FFFF99')
+# ws['A104'].fill = PatternFill("solid", start_color='00003366')
 
 for c in ws['A2:A100']:
     c[0].alignment = center_align
@@ -37,7 +44,7 @@ films = ["0078748", "0093773", "1375666",
          "0090605", "0167261", "0369339",
          "0372784", "0468569", "0080455",
          "0167260", "0120737", "0208092",
-         "0253556", "0238380", "0209144",
+         "0253556", "0238380", "0209144"
          "0278504", "0076740", "0090180",
          "0147800", "0112864", "0114369",
          "0113189", "0381061", "0075005",
@@ -53,40 +60,74 @@ films = ["0078748", "0093773", "1375666",
          "0066999", "2265171", "0120611",
          "1745960", "0187078", "0246578",
          "0110413", "0116483", "0377092",
-         "0166924", "0086190", "1049413",
-         "0129167", "0120363", "0120755",
-         "4912910", "0076729", "0067116",
-         "0348333", "0115759", "0109040",
-         "0113277", "0947810", "0096874",
-         "0320661", "0097733", "0477348",
-         "0082869", "0108399", "0104348",
-         "0120201", "0075784", "0120863",
-         "0118880", "0211915", "0100403",
-         "0084434", "0117998", "0079817",
-         "0469494", "0146838", "0044079",
-         "0102138", "0104684", "0100802",
-         "0120586", "0085636"
-         ]
+         "0166924", "0086190", "1049413"]
+#  "0129167", "0120363", "0120755",
+#  "4912910", "0076729", "0067116",
+#  "0348333", "0115759", "0109040",
+#  "0113277", "0947810", "0096874",
+#  "0320661", "0097733", "0477348",
+#  "0082869", "0108399", "0104348",
+#  "0120201", "0075784", "0120863",
+#  "0118880", "0211915", "0100403",
+#  "0084434", "0117998", "0079817",
+#  "0469494", "0146838", "0044079",
+#  "0102138", "0104684", "0100802",
+#  "0120586", "0085636", "10045260",
+
 
 column = 2
 columnThree = 3
 columnFour = 4
 
+# Testing individual films
+# ex = im.get_keyword('Exorcist')
+# extwo = im.get_movie('10045260')
+# print(extwo)
+movieListYear = []
 for i, v in enumerate(films):
     movie = im.get_movie(v)
-    # print(movie)
     title = movie['original title']
     year = movie['year']
-    for d in movie['directors']:
-        print(d['name'])
 
+    for d in movie['directors']:
         ws.cell(row=i+2, column=column, value=title)
         ws.cell(row=i+2, column=columnThree, value=str(d['name']))
         ws.cell(row=i+2, column=columnFour, value=year)
 
-ws.title = "Films"
+        movieListYear.append(year)
+        m = max(movieListYear, key=movieListYear.count)
+        print('Most movies by year', m)
+        # for v in movieListYear:
+        #     cn = Counter(v)
+        #     m = max(cn)
+        #     print(m)
+        # use max(list,key=list.count) => will get max year/director
+
+
+# df = pd.DataFrame({'movie': [movie], 'year': [year], 'director': [d['name']]})
+# print(df)
+# for i in range(year):
+# print(dir(i))
+# cn = Counter(i)
+#     print(cn)
+#     total = max(cn)
+# ws.cell(row=103, column=column, value=total)
+
+# firstMockData = {'year': [year]}
+# firstMockDF = pd.DataFrame(firstMockData)
+# # print(firstMockData)
+# df_pivot = pd.pivot(df, index='D1', columns='D1', values='D2:D10')
+# print(df_pivot)
+# firstMockDF.to_excel('test_wb.xlsx', 'sheetA', index=False)
+
 
 wb.save(filename="films.xlsx")
+# wb.
+# wb = load_workbook("films.xlsx")
+# s = pd.read_excel("films.xlsx")
+# p1 = pd.pivot_table(s, index='year')
+
+# print(p1)
 # movieTest = im.search_movie("Halloween 3: Season of the Witch")
 # print(movieTest)
 # movie = im.get_movie('0085636').data
