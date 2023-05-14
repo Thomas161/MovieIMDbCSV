@@ -24,6 +24,12 @@ ws['C1'].fill = PatternFill("solid", start_color='00FF8080')
 ws['D1'] = "Year"
 ws['D1'].font = Font(name='Verdana', size=18, bold=True, color='00FF6600')
 ws['D1'].fill = PatternFill("solid", start_color='00003366')
+ws['E1'] = "Box Office Global"
+ws['E1'].font = Font(name='Verdana', size=18, bold=True, color='00FFFFFF')
+ws['E1'].fill = PatternFill("solid", start_color='00800000')
+ws['F1'] = "Genre"
+ws['F1'].font = Font(name='Verdana', size=18, bold=True, color='000066CC')
+ws['F1'].fill = PatternFill("solid", start_color='00FFFF00')
 # ws['A103'] = "Year with most Films"
 # ws['A103'].font = Font(name='Verdana', size=18, bold=True, color='00FFFF99')
 # ws['A103'].fill = PatternFill("solid", start_color='00003366')
@@ -40,27 +46,27 @@ for c in ws['B2:D100']:
 for i in range(1, 100):
     ws.cell(row=i+1, column=1, value="*")
 
-films = ["0078748", "0093773", "1375666",
-         "0090605", "0167261", "0369339",
-         "0372784", "0468569", "0080455",
-         "0167260", "0120737", "0208092",
-         "0253556", "0238380", "0209144"
-         "0278504", "0076740", "0090180",
-         "0147800", "0112864", "0114369",
-         "0113189", "0381061", "0075005",
-         "1853728", "0110912", "0361748",
-         "1392214", "1856101", "3397884",
-         "0119081", "0096256", "0107076",
-         "0364725", "0172495", "0265086",
-         "0190590", "0116282", "0108358",
-         "0058461", "0059578", "1205489",
-         "0103644", "0396269", "0374900",
-         "0083658", "0103064", "0191397",
-         "0118887", "0107290", "0418279",
-         "0066999", "2265171", "0120611",
-         "1745960", "0187078", "0246578",
-         "0110413", "0116483", "0377092",
-         "0166924", "0086190", "1049413"]
+films = ["0078748", "0093773", "1375666"]
+#          "0090605", "0167261", "0369339",
+#          "0372784", "0468569", "0080455",
+#          "0167260", "0120737", "0208092",
+#          "0253556", "0238380", "0209144"
+#          "0278504", "0076740", "0090180",
+#          "0147800", "0112864", "0114369",
+#          "0113189", "0381061", "0075005",
+#          "1853728", "0110912", "0361748",
+#          "1392214", "1856101", "3397884",
+#          "0119081", "0096256", "0107076",
+#          "0364725", "0172495", "0265086",
+#          "0190590", "0116282", "0108358",
+#          "0058461", "0059578", "1205489",
+#          "0103644", "0396269", "0374900",
+#          "0083658", "0103064", "0191397",
+#          "0118887", "0107290", "0418279",
+#          "0066999", "2265171", "0120611",
+#          "1745960", "0187078", "0246578",
+#          "0110413", "0116483", "0377092",
+#          "0166924", "0086190", "1049413"
 #  "0129167", "0120363", "0120755",
 #  "4912910", "0076729", "0067116",
 #  "0348333", "0115759", "0109040",
@@ -78,30 +84,48 @@ films = ["0078748", "0093773", "1375666",
 column = 2
 columnThree = 3
 columnFour = 4
+columnFive = 5
+columnSix = 6
 
 # Testing individual films
 # ex = im.get_keyword('Exorcist')
 # extwo = im.get_movie('10045260')
+# extwo = im.get('10045260')
 # print(extwo)
-movieListYear = []
+
+# movieListYear = []
 for i, v in enumerate(films):
     movie = im.get_movie(v)
+    box_office = movie['box office']['Cumulative Worldwide Gross']
     title = movie['original title']
     year = movie['year']
+    genre = movie['genres']
+    for e in genre:
+        for d in movie['directors']:
+            ws.cell(row=i+2, column=column, value=title)
+            ws.cell(row=i+2, column=columnThree, value=str(d['name']))
+            ws.cell(row=i+2, column=columnFour, value=year)
+            ws.cell(row=i+2, column=columnFive, value=box_office)
+            ws.cell(row=i+2, column=columnSix, value=e)
 
-    for d in movie['directors']:
-        ws.cell(row=i+2, column=column, value=title)
-        ws.cell(row=i+2, column=columnThree, value=str(d['name']))
-        ws.cell(row=i+2, column=columnFour, value=year)
+# movieListYear.append(year)
+# movieListYear.sort()
+# # m = max(movieListYear, key=movieListYear.count)
+# print('Most movies by year', movieListYear)
+# for v in movieListYear:
+#     cn = Counter(v)
+#     m = max(cn)
+#     print(m)
+# use max(list,key=list.count) => will get max year/director
+# movieListYear.append(year)
+# # movieListYear.sort()
+# m = max(movieListYear, key=movieListYear.count)
+# print(m)
+# cn = Counter(movieListYear)
 
-        movieListYear.append(year)
-        m = max(movieListYear, key=movieListYear.count)
-        print('Most movies by year', m)
-        # for v in movieListYear:
-        #     cn = Counter(v)
-        #     m = max(cn)
-        #     print(m)
-        # use max(list,key=list.count) => will get max year/director
+# cn = max(movieListYear, key=movieListYear.count())
+# print(f'list {li}')
+# print()
 
 
 # df = pd.DataFrame({'movie': [movie], 'year': [year], 'director': [d['name']]})
