@@ -93,21 +93,41 @@ columnSix = 6
 # extwo = im.get('10045260')
 # print(extwo)
 
-# movieListYear = []
-for i, v in enumerate(films):
-    movie = im.get_movie(v)
-    box_office = movie['box office']['Cumulative Worldwide Gross']
-    title = movie['original title']
-    year = movie['year']
-    genre = movie['genres']
-    for e in genre:
-        for d in movie['directors']:
-            ws.cell(row=i+2, column=column, value=title)
-            ws.cell(row=i+2, column=columnThree, value=str(d['name']))
-            ws.cell(row=i+2, column=columnFour, value=year)
-            ws.cell(row=i+2, column=columnFive, value=box_office)
-            ws.cell(row=i+2, column=columnSix, value=e)
+movieListYear = []
+movieTitles = []
 
+
+def render_films():
+    for i, v in enumerate(films):
+        movie = im.get_movie(v)
+        box_office = movie['box office']['Cumulative Worldwide Gross']
+        title = movie['original title']
+        year = movie['year']
+        genre = movie['genres']
+        for e in genre:
+            for d in movie['directors']:
+                ws.cell(row=i+2, column=column, value=title)
+                ws.cell(row=i+2, column=columnThree, value=str(d['name']))
+                ws.cell(row=i+2, column=columnFour, value=year)
+                ws.cell(row=i+2, column=columnFive, value=box_office)
+                ws.cell(row=i+2, column=columnSix, value=e)
+
+        movieTitles.append(title)
+        movieListYear.append(year)
+
+
+render_films()
+
+print(movieTitles)
+print(movieListYear)
+
+df = pd.DataFrame({'year': movieListYear, 'movie': movieTitles})
+# print(df.head())
+# df['movie'] = df['movie'].astype('str')
+# df['movie'].str
+# print(df.empty)
+df.pivot_table(columns=['movie'], index=['year'], aggfunc=len)
+print(df)
 # movieListYear.append(year)
 # movieListYear.sort()
 # # m = max(movieListYear, key=movieListYear.count)
