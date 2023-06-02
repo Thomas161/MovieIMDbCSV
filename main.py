@@ -10,9 +10,6 @@ ws = wb.active
 
 ws = wb.create_sheet("Sheet_A")
 ws.title = "Films"
-wstwo = wb.create_sheet("Sheet_B", 0)
-wstwo.title = "Tables"
-
 
 center_align = Alignment(horizontal='center', vertical='center')
 ws['B1'] = "Title"
@@ -46,7 +43,8 @@ for c in ws['B2:D100']:
 for i in range(1, 100):
     ws.cell(row=i+1, column=1, value="*")
 
-films = ["0078748", "0093773", "1375666"]
+films = ["0078748", "0093773",
+         "1375666"]
 #          "0090605", "0167261", "0369339",
 #          "0372784", "0468569", "0080455",
 #          "0167260", "0120737", "0208092",
@@ -96,11 +94,14 @@ columnSix = 6
 movieListYear = []
 movieTitles = []
 
+# movie = im.search_movie('apocalypse now')
+# moviewww = im.get_movie('0078788')
+# print(moviewww['year'])
+
 
 def render_films():
     for i, v in enumerate(films):
         movie = im.get_movie(v)
-        box_office = movie['box office']['Cumulative Worldwide Gross']
         title = movie['original title']
         year = movie['year']
         genre = movie['genres']
@@ -109,25 +110,38 @@ def render_films():
                 ws.cell(row=i+2, column=column, value=title)
                 ws.cell(row=i+2, column=columnThree, value=str(d['name']))
                 ws.cell(row=i+2, column=columnFour, value=year)
-                ws.cell(row=i+2, column=columnFive, value=box_office)
                 ws.cell(row=i+2, column=columnSix, value=e)
 
         movieTitles.append(title)
         movieListYear.append(year)
 
 
-render_films()
-
-print(movieTitles)
-print(movieListYear)
-
 df = pd.DataFrame({'year': movieListYear, 'movie': movieTitles})
 # print(df.head())
 # df['movie'] = df['movie'].astype('str')
 # df['movie'].str
-# print(df.empty)
-df.pivot_table(columns=['movie'], index=['year'], aggfunc=len)
-print(df)
+# print(df.empty)s
+df2 = df.pivot_table(index=['year', 'movie'], values=['movie'], aggfunc='size')
+print(df2)
+with pd.ExcelWriter('films.xlsx') as writer:
+    df2.to_excel(writer, sheet_name='pivot')
+
+render_films()
+wb.save(filename="films.xlsx")
+
+# print(movieTitles)
+# print(movieListYear)
+
+# df = pd.DataFrame({'year': movieListYear, 'movie': movieTitles})
+# # print(df.head())
+# # df['movie'] = df['movie'].astype('str')
+# # df['movie'].str
+# # print(df.empty)s
+# df2 = df.pivot_table(index=['year', 'movie'], values=['movie'], aggfunc='size')
+# print(df2)
+# with pd.ExcelWriter('films.xlsx') as writer:
+#     df2.to_excel(writer, sheet_name='pivot')
+# pd.ExcelWriter(render_films())
 # movieListYear.append(year)
 # movieListYear.sort()
 # # m = max(movieListYear, key=movieListYear.count)
@@ -165,7 +179,6 @@ print(df)
 # firstMockDF.to_excel('test_wb.xlsx', 'sheetA', index=False)
 
 
-wb.save(filename="films.xlsx")
 # wb.
 # wb = load_workbook("films.xlsx")
 # s = pd.read_excel("films.xlsx")
