@@ -1,12 +1,23 @@
 from openpyxl import Workbook, load_workbook
 # from collections import Counter
+# import pygwalker as pyg
 import pandas as pd
-# import seaborn as sns
+import seaborn as sns
 
 title = pd.read_excel('films.xlsx', sheet_name='Films', usecols='B')
 titleList = title['Title'].to_list()
 year = pd.read_excel('films.xlsx', sheet_name='Films', usecols='D')
 yearList = year['Year'].to_list()
 df = pd.DataFrame({'year': yearList, 'movie': titleList})
-df2 = df.pivot_table(index=['year', 'movie'], values=['movie'], aggfunc='size')
-print(df2)
+# df2 = df.pivot_table(index=['year', 'movie'], values=[
+#                      'movie'])
+df.style.background_gradient(cmap='green')
+# print(df.head())
+# df2.style.format({"Year": "Year"}).highlight_min(color='#cd4f39')
+# print(df.style.bar())
+# s = sns.
+# df2.style.background_gradient(cmap='green')
+# df2.to_excel('pivot.xlsx')
+# with pd.ExcelWriter('films.xlsx') as writer:
+#     df.to_excel(writer, sheet_name='Sheet')
+# print(pivot)
