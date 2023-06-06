@@ -22,7 +22,9 @@ ws['D1'].fill = PatternFill("solid", start_color='00003366')
 ws['E1'] = "Genre"
 ws['E1'].font = Font(name='Verdana', size=18, bold=True, color='000066CC')
 ws['E1'].fill = PatternFill("solid", start_color='00FFFF00')
-
+ws['F1'] = "Worldwide Box Office"
+ws['F1'].font = Font(name='Verdana', size=18, bold=True, color='00FFCC00')
+ws['F1'].fill = PatternFill("solid", start_color='00003366')
 for c in ws['A2:A100']:
     c[0].alignment = center_align
 for c in ws['B2:D100']:
@@ -69,11 +71,17 @@ column = 2
 columnThree = 3
 columnFour = 4
 columnFive = 5
+# columnSix = 6
+
+
+# print(im.get_movie('0080455').data['box office'])
 
 
 def render_films():
     for i, v in enumerate(films):
         movie = im.get_movie(v)
+        # box =
+        print(movie.data['box office']['Budget'])
         title = movie['original title']
         year = movie['year']
         genre = movie['genres']
@@ -83,7 +91,8 @@ def render_films():
                 ws.cell(row=i+2, column=columnThree, value=str(d['name']))
                 ws.cell(row=i+2, column=columnFour, value=year)
                 ws.cell(row=i+2, column=columnFive, value=e)
+                # ws.cell(row=i+2, column=columnSix, value=box)
 
 
 render_films()
-wb.save('films.xlsx')
+wb.save('test.xlsx')
