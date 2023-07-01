@@ -41,12 +41,15 @@ firstThreeActors = 3
 
 def render_films():
     for i, v in enumerate(films):
-        movie = im.get_movie(v)
-        cast = im.get_movie(v).data['cast'][:firstThreeActors]
+        movie = im.get_movie(v).data
+        cast = movie['cast'][:firstThreeActors]
+        title = movie['original title']
+        runtime = movie['runtimes']
+        for r in runtime:
+            print(r)
         for i in cast:
             print(i)
         box = movie.data['box office']['Cumulative Worldwide Gross']
-        title = movie['original title']
         year = movie['year']
         genre = movie['genres']
         for e in genre:
